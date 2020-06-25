@@ -14,7 +14,7 @@ module.exports.createUser = async (event, context) => {
     }
   }
   try {
-    const dynamodb = new AWS.DynamoDB.DocumentClient()
+    const dynamodb = new AWS.DynamoDB.DocumentClient();
     const putResult = await dynamodb.put(newUserParams).promise();
     return {
       statusCode: 200,
@@ -28,6 +28,7 @@ module.exports.createUser = async (event, context) => {
   } catch (putError) {
     console.log("User creation error");
     console.log("put error", putError);
+    console.log("params", newUserParams);
     return new Error("User creation error");
   }
 

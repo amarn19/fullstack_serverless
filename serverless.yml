@@ -30,14 +30,14 @@ provider:
 #  region: us-east-1
 
 # you can add statements to the Lambda function's IAM Role here
-iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - "dynamodb:Query"
-        - "dynamodb:PutItem"
-      Resource:
-        - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}
-        - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}/index/pk
+  iamRoleStatements:
+     - Effect: Allow
+       Action:
+         - "dynamodb:Query"
+         - "dynamodb:PutItem"
+       Resource:
+         - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}
+         - arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}/index/pk
 #  iamRoleStatements:
 #    - Effect: "Allow"
 #      Action:
@@ -54,8 +54,8 @@ iamRoleStatements:
 #            - "/*"
 
 # you can define service wide environment variables here
-environment:
-  DYNAMODB_USER_TABLE: ${self:custom.dynamodb.userTable}
+  environment:
+     DYNAMODB_USER_TABLE: userTable
 #    variable1: value1
 
 # you can add packaging information here
@@ -68,6 +68,8 @@ environment:
 #    - exclude-me-dir/**
 
 functions:
+  loginUser:
+    handler: src/functions/loginUser.loginUser
   createUser:
     handler: src/functions/createUser.createUser
     events:
@@ -137,7 +139,7 @@ plugins:
 
 custom:
   dynamodb:
-    userTable: ${self:service}-user-${self:provider.stage}
+    userTable: userTable
   serverless-mocha-plugin:
     testTemplate: template/test-template.ejs
     functionTemplate: template/function-template.ejs
@@ -148,7 +150,7 @@ resources:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:custom.dynamodb.userTable}
+        TableName: userTable
         AttributeDefinitions:
           - AttributeName: pk
             AttributeType: S
