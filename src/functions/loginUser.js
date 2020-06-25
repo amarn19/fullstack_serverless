@@ -48,7 +48,7 @@ module.exports.loginUser = async (event, context) => {
   return {
     statusCode: 404,
     body: JSON.stringify({
-      message: 'User not found'
+      message: 'User crendentials incorrect.Try again'
     }),
   };
 
